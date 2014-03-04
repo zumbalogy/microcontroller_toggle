@@ -1,0 +1,19 @@
+<h1>click me!</h1>
+
+<style type="text/css">
+    .red{ background-color: red;}
+</style>
+
+<script type="text/javascript">
+    
+    $('body').on('click', function(){
+        $('body').toggleClass('red');
+
+        $.ajax({
+            url: '/toggle',
+            method: 'post'
+        })
+
+
+    })
+</script>
