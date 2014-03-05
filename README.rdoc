@@ -26,3 +26,104 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+      if (command == "burst") {
+        turnOff();
+        delay(1000);
+
+        for (int i = 0; i < 10; i++){ 
+            turnOn();
+            delay(200);
+            turnOff(200);
+            delay(200);
+        }
+      } 
+      
+      
+////////////////////////////////////\/\/\/
+      
+      // ********** variables **********
+
+// set const int for button led pair
+const int buttonPin = 0;
+const int ledPin =  3;
+
+int buttonState = 0;
+int lastButtonState = 0; 
+int buttonPushCounter = 0;
+
+int coastCoast(String command);
+
+// ********** setup **********
+void setup() {
+    
+    Spark.function("ledstate", coastCoast);
+  
+  // set buttonPin to INPUT
+  pinMode(buttonPin, INPUT);
+  // set ledPin to OUTPUT
+  pinMode(ledPin, OUTPUT);
+  
+}
+
+
+// ********** loop **********
+void loop() {
+  
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+
+  // compare the buttonState to its previous state
+  if (buttonState != lastButtonState) {
+    // check if the pushbutton is pressed.
+    // if it is, the buttonState is HIG
+H:
+    if (buttonState == HIGH) { 
+      // Serial.println(buttonPushCounter);
+
+      if (buttonPushCounter == 0) {
+        // Serial.println("Led: ON");
+        turnOn();
+      } else {
+        turnOff();
+        // Serial.println("LED: OFF");
+      }
+    } 
+    // remember last state
+    lastButtonState = buttonState;
+    // limit button to 2 states
+    
+  }
+}
+// ********** functions **********
+void turnOn() {
+  digitalWrite(3, HIGH);
+   buttonPushCounter = 1;
+}
+
+void turnOff() {
+  digitalWrite(3, LOW);
+  buttonPushCounter = 0;
+}
+
+
+
+int coastCoast(String command) {
+
+      if (command == "high") {
+        turnOn();
+        return 1;
+      } 
+      
+      if (command == "low") {
+        turnOff();
+        return 0;
+      }
+      
+      if (command == "status") {
+          return buttonPushCounter;
+      }
+}
+
+
